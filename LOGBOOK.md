@@ -59,15 +59,21 @@
 
 | Date       | Objectif                          | Tâche                                                                                    | Statut   | Problème/Résultat/Remarque                                       |
 |------------|-----------------------------------|------------------------------------------------------------------------------------------|----------|------------------------------------------------------------------|
-| 2024-03-06 | Prise de contact                  | Prise d’information sur le sujet, échanges par mail                                      | Fait     | Précisions obtenues sur les données et le cadre du projet        |
-| 2024-03-06 | Revue préliminaire                | Recherche d’exemples de jeux de données similaires                                       | Fait     | Tests initiaux sur des datasets “micro-organismes” de Kaggle     |
-| 2024-03-07 | Prototypage                       | Implémentation d’un premier CNN basique                                                  | Fait     | Résultats initiaux mitigés, visualisation des performances       |
-| 2024-03-12 | Prise en main des données         | Réception d’exemples d’images du laboratoire                                             | Fait     | Stockage et visualisation des images test                        |
-| 2024-03-18 | Revue de littérature scientifique | Étudier le contexte biologique du projet et la problématique des cyanobactéries toxiques | Fait     | Synthétise des méthodes existantes d’identification              |
-| 2024-03-21 | Suivi collaboratif                | Relance et échanges pour suivi des images externes                                       | En cours | Attente de réception d’images de Nouvelle-Zélande et USA         |
-| 2024-04-24 | Organisation du projet            | Mise en place de la structure du dossier Git                                             | Fait     | Initialisation du dépôt, ajout de .gitignore, README, venv, etc. |
-| 2024-04-24 | Logbook & planification           | Définition des objectifs et création du logbook                                          | Fait     | Liste d’objectifs structurée, template logbook validé            |
-| xxxx-xx-xx | x                                 | x                                                                                        | x        | x                                                                |
+| 2025-03-06 | Prise de contact                  | Prise d’information sur le sujet, échanges par mail                                      | Fait     | Précisions obtenues sur les données et le cadre du projet        |
+| 2025-03-06 | Revue préliminaire                | Recherche d’exemples de jeux de données similaires                                       | Fait     | Tests initiaux sur des datasets “micro-organismes” de Kaggle     |
+| 2025-03-07 | Prototypage                       | Implémentation d’un premier CNN basique                                                  | Fait     | Résultats initiaux mitigés, visualisation des performances       |
+| 2025-03-12 | Prise en main des données         | Réception d’exemples d’images du laboratoire                                             | Fait     | Stockage et visualisation des images test                        |
+| 2025-03-18 | Revue de littérature scientifique | Étudier le contexte biologique du projet et la problématique des cyanobactéries toxiques | Fait     | Synthétise des méthodes existantes d’identification              |
+| 2025-03-21 | Suivi collaboratif                | Relance et échanges pour suivi des images externes                                       | En cours | Attente de réception d’images de Nouvelle-Zélande et USA         |
+| 2025-04-24 | Organisation du projet            | Mise en place de la structure du dossier Git                                             | Fait     | Initialisation du dépôt, ajout de .gitignore, README, venv, etc. |
+| 2025-04-24 | Logbook & planification           | Définition des objectifs et création du logbook                                          | Fait     | Liste d’objectifs structurée, template logbook validé            |
+| 2025-04-24 | Exploration des données           | Création du notebook d’exploration (`notebooks/01_data_exploration.ipynb`)               | Fait     | Fichier créé (non testé)                                         |
+| 2025-04-24 | Prétraitement des données         | Ajout du script utilitaire de listing et vérification d’images (`src/dataset.py`)        | Fait     | Fichier créé (non testé)                                         |
+| 2025-04-24 | Prétraitement des données         | Préparation du pipeline de prétraitement (`src/preprocessing.py`)                        | Fait     | Fichier créé (non testé)                                         |
+| 2025-04-24 | Organisation du projet            | Création de la structure des dossiers (`data/`, `outputs/`) avec fichiers `.gitkeep`     | Fait     | Dossiers créés avec `.gitkeep`                                   |
+| 2025-04-24 | Documentation                     | Mise à jour du README et du logbook (sections scripts, dossiers, workflow)               | Fait     | README enrichi, logbook mis à jour                               |
+| 2025-04-24 | Évaluation modèle                 | Ajout du module de métriques (`src/metrics.py`)                                          | Fait     | Fichier créé (non testé)                                         |
+| 2025-04-24 | Prototypage de modèle             | Création du notebook d’entraînement baseline (`notebooks/02_train_baseline.ipynb`)       | Fait     | Fichier créé (non testé)                                         |
 
 
 ---
