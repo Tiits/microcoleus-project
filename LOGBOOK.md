@@ -25,6 +25,36 @@
 
 ---
 
+## Plan d’action détaillé
+
+### 1. Organisation initiale & premiers tests
+
+- [x] Prise de contact avec le laboratoire, clarification du cadre du projet
+- [x] Étude bibliographique sur la classification d’images de cyanobactéries/micro-organismes
+- [x] Recherche et téléchargement de jeux de données similaires (ex : Kaggle)
+- [x] Réalisation de premiers tests de modèles CNN sur ces jeux de données externes
+- [x] Réalisation de premiers tests de modèles pré-entraînés sur ces jeux de données externes
+- [x] Mise en place de la structure du dépôt Git et création du logbook
+- [x] Rédaction du README, du .gitignore et du requirements.txt
+
+### 2. Préparation avant réception des données réelles
+
+- [ ] Créer un notebook d’exploration prêt à l’emploi (`notebooks/01_data_exploration.ipynb`) : chargement, affichage, stats de base
+- [ ] Écrire un script utilitaire pour vérifier et lister les images (`src/dataset.py`)
+- [ ] Préparer un squelette de pipeline de prétraitement d’images (`src/preprocessing.py`)
+- [ ] Définir et créer la structure des dossiers : `data/raw/`, `data/processed/`, `outputs/checkpoints/`
+- [ ] Compléter/mettre à jour le README et le logbook (explications, instructions)
+- [ ] Préparer un module/fonctions de calcul de métriques d’évaluation (`src/metrics.py`)
+- [ ] Créer un squelette de notebook ou script pour l’entraînement (`src/train.py` ou `notebooks/02_train_baseline.ipynb`)
+
+### 3. À compléter dès réception des données réelles
+
+- [ ] Analyser la structure, la diversité et la qualité des images reçues
+- [ ] Lancer l’exploration statistique et visuelle du dataset
+- [ ] Adapter les notebooks/scripts à la structure et aux formats réels
+
+---
+
 ## Tâches et avancement
 
 | Date       | Objectif                          | Tâche                                                                                    | Statut   | Problème/Résultat/Remarque                                       |
