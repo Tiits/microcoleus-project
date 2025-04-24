@@ -39,13 +39,13 @@
 
 ### 2. Préparation avant réception des données réelles
 
-- [ ] Créer un notebook d’exploration prêt à l’emploi (`notebooks/01_data_exploration.ipynb`) : chargement, affichage, stats de base
-- [ ] Écrire un script utilitaire pour vérifier et lister les images (`src/dataset.py`)
-- [ ] Préparer un squelette de pipeline de prétraitement d’images (`src/preprocessing.py`)
-- [ ] Définir et créer la structure des dossiers : `data/raw/`, `data/processed/`, `outputs/checkpoints/`
-- [ ] Compléter/mettre à jour le README et le logbook (explications, instructions)
-- [ ] Préparer un module/fonctions de calcul de métriques d’évaluation (`src/metrics.py`)
-- [ ] Créer un squelette de notebook ou script pour l’entraînement (`src/train.py` ou `notebooks/02_train_baseline.ipynb`)
+- [x] Créer un notebook d’exploration prêt à l’emploi (`notebooks/01_data_exploration.ipynb`) : chargement, affichage, stats de base
+- [x] Écrire un script utilitaire pour vérifier et lister les images (`src/dataset.py`)
+- [x] Préparer un squelette de pipeline de prétraitement d’images (`src/preprocessing.py`)
+- [x] Définir et créer la structure des dossiers : `data/raw/`, `data/processed/`, `outputs/checkpoints/`
+- [x] Compléter/mettre à jour le README et le logbook (explications, instructions)
+- [x] Préparer un module/fonctions de calcul de métriques d’évaluation (`src/metrics.py`)
+- [x] Créer un squelette de notebook ou script pour l’entraînement (`src/train.py` ou `notebooks/02_train_baseline.ipynb`)
 
 ### 3. À compléter dès réception des données réelles
 
