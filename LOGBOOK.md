@@ -82,8 +82,8 @@
 ## Problèmes rencontrés & solutions
 
 ### YYYY-MM-DD — (Titre du problème rencontré)
-**Problème** : (Décris le problème)
-**Solution** : (Décris ce que tu as fait pour résoudre ou contourner le problème)
+**Problème** : (Description du problème)
+**Solution** : (Description de la solution)
 
 ---
 
