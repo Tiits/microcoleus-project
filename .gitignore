@@ -1,9 +1,22 @@
 venv/
 __pycache__/
 *.pyc
+
+# Dossiers de données
 data/raw/*
 !data/raw/**/.gitkeep
+
 data/processed/*
 !data/processed/**/.gitkeep
-outputs/checkpoints/
-outputs/logs/
+
+# Checkpoints
+outputs/checkpoints/*
+!outputs/checkpoints/**/.gitkeep
+
+# Figures
+outputs/figures/*
+!outputs/figures/**/.gitkeep
+
+# Logs
+outputs/logs/*
+!outputs/logs/**/.gitkeep
