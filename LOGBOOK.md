@@ -42,12 +42,21 @@
 - [x] Créer un notebook d’exploration prêt à l’emploi (`notebooks/01_data_exploration.ipynb`) : chargement, affichage, stats de base
 - [x] Écrire un script utilitaire pour vérifier et lister les images (`src/dataset.py`)
 - [x] Préparer un squelette de pipeline de prétraitement d’images (`src/preprocessing.py`)
-- [x] Définir et créer la structure des dossiers : `data/raw/`, `data/processed/`, `outputs/checkpoints/`
+- [x] Définir et créer la structure des dossiers : `data/raw/`, `data/processed/`, `outputs/checkpoints/`, `outputs/configs/`, `splits/`
 - [x] Compléter/mettre à jour le README et le logbook (explications, instructions)
 - [x] Préparer un module/fonctions de calcul de métriques d’évaluation (`src/metrics.py`)
-- [x] Créer un squelette de notebook ou script pour l’entraînement (`src/train.py` ou `notebooks/02_train_baseline.ipynb`)
+- [x] Créer un module de loading depuis splits (`src/data_loader.py`)
+- [x] Implémenter le script de génération de splits (`src/split_data.py`)
+- [x] Définir et ajouter le loader de config (`src/config_utils.py`)
 
-### 3. À compléter dès réception des données réelles
+### 3. Mise en place du workflow reproductible (après réception des données NZ)
+
+- [x] Adapter les notebooks (`01_data_exploration.ipynb`, `02_train_baseline.ipynb`) pour importer la config et les modules
+- [x] Utiliser `load_from_splits` pour charger les datasets train/val
+- [x] Paramétrer ModelCheckpoint, sauvegarde config, figures et logs via `run_id`
+- [x] Mettre à jour le guide de versionnage Git et appliquer le tagging avant chaque essai
+
+### 4. À compléter dès réception de toutes les données réelles
 
 - [ ] Analyser la structure, la diversité et la qualité des images reçues
 - [ ] Lancer l’exploration statistique et visuelle du dataset
@@ -57,27 +66,31 @@
 
 ## Tâches et avancement
 
-| Date       | Objectif                          | Tâche                                                                                    | Statut   | Problème/Résultat/Remarque                                       |
-|------------|-----------------------------------|------------------------------------------------------------------------------------------|----------|------------------------------------------------------------------|
-| 2025-03-06 | Prise de contact                  | Prise d’information sur le sujet, échanges par mail                                      | Fait     | Précisions obtenues sur les données et le cadre du projet        |
-| 2025-03-06 | Revue préliminaire                | Recherche d’exemples de jeux de données similaires                                       | Fait     | Tests initiaux sur des datasets “micro-organismes” de Kaggle     |
-| 2025-03-07 | Prototypage                       | Implémentation d’un premier CNN basique                                                  | Fait     | Résultats initiaux mitigés, visualisation des performances       |
-| 2025-03-12 | Prise en main des données         | Réception d’exemples d’images du laboratoire                                             | Fait     | Stockage et visualisation des images test                        |
-| 2025-03-18 | Revue de littérature scientifique | Étudier le contexte biologique du projet et la problématique des cyanobactéries toxiques | Fait     | Synthétise des méthodes existantes d’identification              |
-| 2025-03-21 | Suivi collaboratif                | Relance et échanges pour suivi des images externes                                       | En cours | Attente de réception d’images de Nouvelle-Zélande et USA         |
-| 2025-04-24 | Organisation du projet            | Mise en place de la structure du dossier Git                                             | Fait     | Initialisation du dépôt, ajout de .gitignore, README, venv, etc. |
-| 2025-04-24 | Logbook & planification           | Définition des objectifs et création du logbook                                          | Fait     | Liste d’objectifs structurée, template logbook validé            |
-| 2025-04-24 | Exploration des données           | Création du notebook d’exploration (`notebooks/01_data_exploration.ipynb`)               | Fait     | Fichier créé (non testé)                                         |
-| 2025-04-24 | Prétraitement des données         | Ajout du script utilitaire de listing et vérification d’images (`src/dataset.py`)        | Fait     | Fichier créé (non testé)                                         |
-| 2025-04-24 | Prétraitement des données         | Préparation du pipeline de prétraitement (`src/preprocessing.py`)                        | Fait     | Fichier créé (non testé)                                         |
-| 2025-04-24 | Organisation du projet            | Création de la structure des dossiers (`data/`, `outputs/`) avec fichiers `.gitkeep`     | Fait     | Dossiers créés avec `.gitkeep`                                   |
-| 2025-04-24 | Documentation                     | Mise à jour du README et du logbook (sections scripts, dossiers, workflow)               | Fait     | README enrichi, logbook mis à jour                               |
-| 2025-04-24 | Évaluation modèle                 | Ajout du module de métriques (`src/metrics.py`)                                          | Fait     | Fichier créé (non testé)                                         |
-| 2025-04-24 | Prototypage de modèle             | Création du notebook d’entraînement baseline (`notebooks/02_train_baseline.ipynb`)       | Fait     | Fichier créé (non testé)                                         |
-
+| Date       | Objectif                          | Tâche                                                                                                       | Statut     | Problème/Résultat/Remarque                          |
+|------------|-----------------------------------|-------------------------------------------------------------------------------------------------------------|------------|-----------------------------------------------------|
+| 2025-03-06 | Prise de contact                  | Prise d’information sur le sujet, échanges par mail                                                         | Fait       | Précisions obtenues sur les données et le cadre du projet |
+| 2025-03-06 | Revue préliminaire                | Recherche d’exemples de jeux de données similaires                                                          | Fait       | Tests initiaux sur des datasets “micro-organismes” de Kaggle |
+| 2025-03-07 | Prototypage                       | Implémentation d’un premier CNN basique                                                                     | Fait       | Résultats initiaux mitigés, visualisation des performances |
+| 2025-03-12 | Prise en main des données         | Réception d’exemples d’images du laboratoire                                                                | Fait       | Stockage et visualisation des images test           |
+| 2025-03-18 | Revue de littérature scientifique | Étudier le contexte biologique du projet et la problématique des cyanobactéries toxiques                    | Fait       | Synthétise des méthodes existantes d’identification |
+| 2025-03-21 | Suivi collaboratif                | Relance et échanges pour suivi des images externes                                                          | En cours   | Attente de réception d’images de Nouvelle-Zélande et USA |
+| 2025-04-24 | Organisation du projet            | Mise en place de la structure du dossier Git                                                                | Fait       | Initialisation du dépôt, ajout de .gitignore, README, venv, etc. |
+| 2025-04-24 | Logbook & planification           | Définition des objectifs et création du logbook                                                             | Fait       | Liste d’objectifs structurée, template logbook validé |
+| 2025-04-24 | Exploration des données           | Création du notebook d’exploration (`notebooks/01_data_exploration.ipynb`)                                  | Fait       | Fichier créé                                        |
+| 2025-04-24 | Prétraitement des données         | Ajout du script utilitaire de listing et vérification d’images (`src/dataset.py`)                           | Fait       | Fichier créé                                        |
+| 2025-04-24 | Prétraitement des données         | Préparation du pipeline de prétraitement (`src/preprocessing.py`)                                           | Fait       | Fichier créé                                        |
+| 2025-04-24 | Organisation du projet            | Création de la structure des dossiers (`data/`, `outputs/`) avec fichiers `.gitkeep`                        | Fait       | Dossiers créés avec `.gitkeep`                      |
+| 2025-04-24 | Documentation                     | Mise à jour du README et du logbook (sections scripts, dossiers, workflow)                                  | Fait       | README enrichi, logbook mis à jour                  |
+| 2025-04-24 | Évaluation modèle                 | Ajout du module de métriques (`src/metrics.py`)                                                             | Fait       | Fichier créé                                        |
+| 2025-04-24 | Prototypage de modèle             | Création du notebook d’entraînement baseline (`notebooks/02_train_baseline.ipynb`)                          | Fait       | Fichier créé                                        |
+| 2025-04-29 | Données de NZ Reçues              | Contient un total de 139 images (non_toxic: 66, toxic: 73)                                                  | Fait       | Modules créés                                       |
+| 2025-04-29 | Restructuration des dossiers      | Ajout de dossiers pour les données de chaque pays et de dossiers 'all'                                      | Fait       | Dossiers créés                                      |
+| 2025-04-29 | Adaptation du code                | Adaptation du code au données et à la nouvelle structure et aux données réels reçues                        | Fait       | Fichiers modifié                                    |
+| 2025-04-29 | Premiers tests réels              | Premiers tests utilisants des données (NZ) éffectutés, résultat mitigé: accuracy:0.69, val_accuracy: 0.48   | Fait       | Résultats initiaux mitigés, trop peu d'image        |
+| 2025-04-29 | Pipeline reproductible            | Implémentation `src/config_utils.py`, `src/split_data.py`, `src/data_loader.py`                             | Fait       | Modules créés                                       |
+| 2025-04-29 | Intégration workflows             | Adaptation notebooks avec config, splits et run_id                                                          | Fait       | Tests NZ images OK (pipeline fonctionnelle)         |
 
 ---
-
 
 ## Problèmes rencontrés & solutions
 
@@ -91,5 +104,3 @@
 
 - (Idée ou question à explorer)
 - (Autre remarque ou piste pour la suite)
-
----
