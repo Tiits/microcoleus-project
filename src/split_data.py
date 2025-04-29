@@ -1,7 +1,8 @@
 import os, random, yaml
 from pathlib import Path
+from src.config_utils import load_config
 
-def generate_splits(cfg, out_dir='splits', train_ratio=0.7, val_ratio=0.15):
+def generate_splits(cfg, out_dir='../splits', train_ratio=0.7, val_ratio=0.15):
     random.seed(cfg['seed'])
     data_dir = Path(cfg['data']['processed_dir'])
     # Récupérer tous les fichiers et leurs labels
@@ -31,7 +32,6 @@ def generate_splits(cfg, out_dir='splits', train_ratio=0.7, val_ratio=0.15):
 
 if __name__ == "__main__":
     # Chargement de la config
-    with open('configs/config.yaml') as f:
-        cfg = yaml.safe_load(f)
+    cfg = load_config()
 
     generate_splits(cfg)
