@@ -1,56 +1,88 @@
+"""
+src/preprocessing.py
+
+Module de prétraitement des images basé sur la configuration définie dans configs/config.yaml.
+"""
 import os
+import shutil
 from PIL import Image, ImageOps
 import numpy as np
+from src.config_utils import load_config
 
-def load_image(img_path, target_size=(128, 128)):
-    """
-    Ouvre une image et la redimensionne au format voulu.
-    """
-    img = Image.open(img_path)
-    img = img.convert('RGB')  # Assure la cohérence des canaux
-    img = img.resize(target_size)
-    return np.array(img)
+# Charger la configuration\
 
-def normalize_image(img_array):
+cfg = load_config()
+TARGET_SIZE = tuple(cfg['preprocessing']['target_size'])
+NORMALIZE = cfg['preprocessing']['normalize']
+AUG = cfg['preprocessing']['augmentations']
+
+
+def load_image(img_path):
     """
-    Normalise les pixels dans [0, 1].
+    Charge une image, la redimensionne et restitue un tableau numpy normalisé si configuré.
     """
-    return img_array / 255.0
+    img = Image.open(img_path).convert('RGB')
+    img = img.resize(TARGET_SIZE)
+    arr = np.array(img)
+    return arr / 255.0 if NORMALIZE else arr
+
 
 def augment_image(img):
     """
-    Applique une transformation d'augmentation de données simple (ex: flip horizontal).
+    Applique des transformations d'augmentation selon la configuration.
     """
-    # Exemples simples : à ajouter selon les besoins
-    img_aug = ImageOps.mirror(img)  # Flip horizontal
-    return img_aug
+    # Flip horizontal
+    if AUG.get('horizontal_flip', False):
+        img = ImageOps.mirror(img)
+    # Rotation aléatoire
+    rot = AUG.get('rotation_range', 0)
+    if rot:
+        angle = np.random.uniform(-rot, rot)
+        img = img.rotate(angle)
+    # Autres augmentations à ajouter ici si besoin
+    return img
 
-def preprocess_folder(input_dir, output_dir, target_size=(128,128), do_augment=False):
+
+def preprocess_folder(input_dir, output_dir):
     """
-    Applique le prétraitement à toutes les images d'un dossier et sauvegarde le résultat.
+    Applique le pipeline de prétraitement à toutes les images d'un dossier.
+
+    Args:
+        input_dir (str): chemin vers les images brutes.
+        output_dir (str): chemin vers les images prétraitées.
     """
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    # Nettoyage du dossier de sortie
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
+
     for cls in os.listdir(input_dir):
         in_cls_path = os.path.join(input_dir, cls)
         out_cls_path = os.path.join(output_dir, cls)
-        if not os.path.isdir(in_cls_path): continue
-        if not os.path.exists(out_cls_path):
-            os.makedirs(out_cls_path)
+        if not os.path.isdir(in_cls_path) or cls.startswith('.'):
+            continue
+        os.makedirs(out_cls_path, exist_ok=True)
         for fname in os.listdir(in_cls_path):
-            if fname.startswith('.'): continue
+            if fname.startswith('.'):
+                continue
             in_path = os.path.join(in_cls_path, fname)
             try:
-                img = Image.open(in_path)
-                img = img.convert('RGB')
-                img = img.resize(target_size)
-                if do_augment:
-                    img = augment_image(img)
-                img.save(os.path.join(out_cls_path, fname))
+                img = Image.open(in_path).convert('RGB')
+                img = img.resize(TARGET_SIZE)
+                img = augment_image(img)
+                arr = np.array(img)
+                if NORMALIZE:
+                    arr = arr / 255.0
+                # Reconstruction et sauvegarde
+                out_img = Image.fromarray((arr * 255).astype(np.uint8)) if NORMALIZE else img
+                out_img.save(os.path.join(out_cls_path, fname))
             except Exception as e:
                 print(f"Erreur sur {in_path}: {e}")
 
+
 if __name__ == '__main__':
-    img_input_dir = '../data/raw'
-    img_output_dir = '../data/processed'
-    preprocess_folder(img_input_dir, img_output_dir, do_augment=False)
+    # Exemple d'utilisation
+    cfg = load_config()
+    input_dir = cfg['data']['raw_dir']
+    output_dir = cfg['data']['processed_dir']
+    preprocess_folder(input_dir, output_dir)
