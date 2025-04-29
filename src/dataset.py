@@ -1,13 +1,22 @@
+"""
+src/dataset.py
+
+Module utilitaire pour le listing et la vérification d'intégrité des images selon la configuration YAML.
+"""
 import os
 from PIL import Image
+from src.config_utils import load_config
 
-def list_images(data_dir, valid_exts=None):
-    """
-    Retourne un dict {classe : [liste de fichiers images valides]}
-    """
-    if valid_exts is None:
-        valid_exts = {'.png', '.jpg', '.jpeg', '.tif', '.tiff'}
+# Charger la configuration
+cfg = load_config()
+DATA_RAW_DIR = cfg['data']['raw_dir']
+VALID_EXTS = {'.png', '.jpg', '.jpeg', '.tif', '.tiff'}
 
+
+def list_images(data_dir=DATA_RAW_DIR, valid_exts=VALID_EXTS):
+    """
+    Retourne un dict {classe: [liste de fichiers images valides]}.
+    """
     class_dict = {}
     for cls in os.listdir(data_dir):
         class_path = os.path.join(data_dir, cls)
@@ -17,13 +26,11 @@ def list_images(data_dir, valid_exts=None):
             class_dict[cls] = images
     return class_dict
 
-def check_image_integrity(data_dir, valid_exts=None):
+
+def check_image_integrity(data_dir=DATA_RAW_DIR, valid_exts=VALID_EXTS):
     """
     Vérifie que toutes les images sont ouvrables. Retourne une liste des fichiers corrompus.
     """
-    if valid_exts is None:
-        valid_exts = {'.png', '.jpg', '.jpeg', '.tif', '.tiff'}
-
     corrupt_files = []
     for cls in os.listdir(data_dir):
         class_path = os.path.join(data_dir, cls)
@@ -33,16 +40,16 @@ def check_image_integrity(data_dir, valid_exts=None):
                     img_path = os.path.join(class_path, img_file)
                     try:
                         with Image.open(img_path) as img:
-                            img.verify()  # Vérifie sans charger l'image en mémoire
+                            img.verify()
                     except Exception:
                         corrupt_files.append(img_path)
     return corrupt_files
 
-# Exemple d’utilisation
+
 if __name__ == '__main__':
-    img_data_dir = '../data/raw'
-    print("Listing des images :", list_images(img_data_dir))
-    corrupts = check_image_integrity(img_data_dir)
+    # Exemple d'utilisation avec la configuration
+    print("Listing des images :", list_images())
+    corrupts = check_image_integrity()
     if corrupts:
         print("Images corrompues trouvées :", corrupts)
     else:
