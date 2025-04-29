@@ -20,3 +20,15 @@ outputs/figures/*
 # Logs
 outputs/logs/*
 !outputs/logs/**/.gitkeep
+
+# Sortie de données et modèles
+outputs/*
+!outputs/configs/
+!outputs/configs/**
+
+# Dossier de configurations
+!configs/
+!configs/**
+
+# Conserver les .gitkeep
+!**/.gitkeep
