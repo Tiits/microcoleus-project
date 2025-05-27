@@ -9,6 +9,12 @@ data/raw/*
 data/processed/*
 !data/processed/**/.gitkeep
 
+data/extracted/*
+!data/extracted/.gitkeep
+
+data/unextracted/*
+!data/unextracted/.gitkeep
+
 # Checkpoints
 outputs/checkpoints/*
 !outputs/checkpoints/**/.gitkeep
