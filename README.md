@@ -10,8 +10,11 @@ Projet de bachelor: identification de la cyanobactérie Microcoleus anatoxicus p
 - `splits/` : définitions des découpages train/val/test (fixés pour la reproductibilité)
 - `data/raw/` : images brutes, telles que reçues (non versionnées)
 - `data/processed/` : images prétraitées prêtes pour l’entraînement (non versionnées)
+- `data/extracted/` : images TIFF extraites depuis `.lif` (non versionnées)
+- `data/unextracted/` : fichiers `.lif` originaux (non versionnés)
 - `notebooks/` : notebooks Jupyter pour l’exploration et le prototypage
 - `src/`: scripts et modules Python (prétraitement, chargement, entraînement, etc.)
+- `src/io/`: utilitaires d’entrée/sortie, notamment `lif_extractor.py`
 - `outputs/checkpoints/` : modèles sauvegardés par run (non versionnés)
 - `outputs/configs/` : copies des fichiers de configuration utilisés pour chaque expérience
 - `outputs/figures/` : graphiques, courbes et visualisations
@@ -39,6 +42,15 @@ Projet de bachelor: identification de la cyanobactérie Microcoleus anatoxicus p
 ---
 
 ## Utilisation des scripts pour expérimentation
+
+### 0. Extraction depuis `.lif`
+
+Pour extraire automatiquement les fichiers TIFF depuis un container Leica `.lif` :
+```bash
+python src/io/lif_extractor.py \
+    --input path/to/file.lif \
+    --output data/extracted/
+```
 
 ### 1. Valider les changements et la configuration
 
@@ -108,6 +120,7 @@ En cas de modifications de la config :
 
 ## Workflow
 
+0. Extraire les TIFF depuis les `.lif` si besoin (src/io/lif_extractor.py)
 1. Placer les données brutes dans `data/raw/{pays}` ou `data/raw/all`
 2. Générer les splits pour train/val/test (`src/split_data.py`)
 3. Prétraiter (`src/preprocessing.py`)
