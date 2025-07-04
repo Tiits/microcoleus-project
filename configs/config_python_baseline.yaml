@@ -1,0 +1,32 @@
+# config_python_baseline.yaml
+seed: 42
+
+data:
+  raw_dir: ../data/raw/python-all
+  processed_dir: ../data/processed/python-all
+
+preprocessing:
+  target_size: [128, 128]
+  normalize: true
+  augmentations:
+    rotation_range: 30
+    width_shift_range: 0.2
+    height_shift_range: 0.2
+    shear_range: 0.2
+    zoom_range: 0.2
+    horizontal_flip: true
+
+training:
+  batch_size: 32
+  epochs: 20
+  learning_rate: 0.001
+  model_type: baseline
+  early_stopping:
+    monitor: val_loss
+    patience: 5
+
+evaluation:
+  metrics: [accuracy, f1, precision, recall]
+  save_report: true
+
+run_tag: python_baseline
