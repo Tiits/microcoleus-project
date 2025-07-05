@@ -23,4 +23,4 @@ training:
   early_stopping:
     monitor: val_accuracy
     patience: 5
-  model_type: efficientnetb0   # ou mobilenetv2, resnet50, etc.
+  model_type: efficientnetb0
