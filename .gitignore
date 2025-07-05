@@ -18,6 +18,10 @@ data/extracted/*
 data/unextracted/*
 !data/unextracted/.gitkeep
 
+# Outputs Configs
+outputs/configs/*
+!outputs/configs/**/.gitkeep
+
 # Checkpoints
 outputs/checkpoints/*
 !outputs/checkpoints/**/.gitkeep
