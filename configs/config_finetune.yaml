@@ -21,6 +21,8 @@ augmentation:
   zoom_range: 0.2
   horizontal_flip: true
   brightness_range: [0.8, 1.2]
+  contrast_range: [0.8, 1.2]
+  cutout_size: [20, 20]
 
 training:
   epochs: 40
@@ -33,8 +35,8 @@ training:
     T_max: 40
   callbacks:
     early_stopping:
-      monitor: val_loss
-      mode: min
+      monitor: val_pr_auc
+      mode: max
       patience: 5
     model_checkpoint:
       monitor: val_recall_toxic

@@ -5,6 +5,7 @@ Module de calcul des métriques d'évaluation pour les modèles de classificatio
 """
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from sklearn.calibration import calibration_curve
 from sklearn.metrics import (accuracy_score, precision_score, recall_score, f1_score, confusion_matrix,
                              classification_report, auc, precision_recall_curve, matthews_corrcoef,
@@ -119,8 +120,12 @@ def calibration_plot(y_true, y_score, n_bins=10):
 
     return fig
 
-
-def threshold_metrics_curve(y_true, y_score, name='model', n_thresholds=50):
+def threshold_metrics_curve(y_true, y_score, name='model', n_thresholds=50, return_df=False):
+    """
+    Trace precision, recall et f1 en fonction du seuil.
+    Si return_df=True, renvoie également un DataFrame avec les colonnes
+    ['threshold', 'precision', 'recall', 'f1'].
+    """
     thresholds = np.linspace(0, 1, n_thresholds)
     precisions, recalls, f1s = [], [], []
 
@@ -130,16 +135,23 @@ def threshold_metrics_curve(y_true, y_score, name='model', n_thresholds=50):
         recalls.append(recall_score(y_true, yp, zero_division=0))
         f1s.append(f1_score(y_true, yp, zero_division=0))
 
+    if return_df:
+        df = pd.DataFrame({
+            'threshold': thresholds,
+            'precision': precisions,
+            'recall': recalls,
+            'f1': f1s
+        })
+        return df
+
     fig, ax = plt.subplots()
-
     ax.plot(thresholds, precisions, label='precision')
-    ax.plot(thresholds, recalls, label='recall')
-    ax.plot(thresholds, f1s, label='f1')
+    ax.plot(thresholds, recalls,    label='recall')
+    ax.plot(thresholds, f1s,        label='f1')
     ax.set_title(f'Threshold metrics — {name}')
-    ax.set_xlabel('Threshold');
+    ax.set_xlabel('Threshold')
     ax.legend()
-
     plt.tight_layout()
-
     return fig
+
 
