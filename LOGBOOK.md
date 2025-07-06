@@ -99,6 +99,9 @@
 | 2025-07-04 | Exploration des données         | Relance du notebook d’exploration avec les nouvelles données         | Fait     | 249 images non_toxic & 342 images toxic générées                  |
 | 2025-07-04 | Développement de modèle         | Exécution du notebook baseline (`02_train_baseline.ipynb`)          | Fait     | Validation accuracy max ≈ 73.9 % (baseline, tag 2025-07-04_7c09ce4) |
 | 2025-07-04 | Développement de modèle         | Exécution du notebook transfer learning (`03_transfer_learning.ipynb`) | Fait     | Validation accuracy stable à 63.6 % (transfer, tag 2025-07-04_7c09ce4) |
+| 2025-07-06 | Prétraitement des données      | Création de `preprocessing_finetune.py` : pipeline avancée (stratification, aug. fortes) | Fait | Rotation 30°, shift 0.2, shear 0.2, zoom 0.2, flip H, brightness ±20 % |
+| 2025-07-06 | Prétraitement des données      | Génération de splits stratifiés via `split_data_finetune.py`                            | Fait | Fichier de splits dédié pour Fine-Tune (train/val équilibré)          |
+| 2025-07-06 | Développement de modèle        | Ajout du notebook `04_finetune.ipynb` (ResNet50 pré-entraîné, fine-tuning 40 epochs)     | Fait | Overfitting détecté : val accuracy ≈ 0.58, val_recall_toxic instable   |
 
 
 
