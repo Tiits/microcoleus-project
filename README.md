@@ -117,7 +117,7 @@ Lancer le notebook :
 En cas de modifications de la config :
   ```bash
   git add configs/my_experiment.yaml
-  git commit -m "feat: add ${config_name} config for experiment X"
+  git commit -m "feat: add ${model name} config (${config_name}.yaml)"
   ```
 
 ---
