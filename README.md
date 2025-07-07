@@ -1,5 +1,9 @@
 # Microcoleus Project
 
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/) 
+[![Jupyter Notebook](https://img.shields.io/badge/Jupyter-Notebook-orange?logo=jupyter&logoColor=white)](https://jupyter.org/install) 
+[![Status: Alpha](https://img.shields.io/badge/status-alpha-red.svg)](https://github.com/Tiits/microcoleus-project/blob/main/LOGBOOK.md)
+
 Projet de bachelor: identification de la cyanobactérie Microcoleus anatoxicus par deep learning.
 
 ---
