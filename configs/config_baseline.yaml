@@ -18,7 +18,7 @@ preprocessing:
 
 training:
   batch_size: 32
-  epochs: 20
+  epochs: 40
   learning_rate: 0.001
   model_type: baseline
   early_stopping:
