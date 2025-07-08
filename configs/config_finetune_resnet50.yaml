@@ -2,7 +2,7 @@ seed: 42
 
 dataset:
   raw_dir: data/processed/all
-  splits_dir: splits/all/finetune
+  splits_dir: splits/all/finetune_resnet50
 
 model:
   name: resnet50
