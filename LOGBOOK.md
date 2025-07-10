@@ -66,9 +66,9 @@
 - [x] Mettre en place l’interprétabilité via Grad-CAM
 - [x] Automatiser la recherche du seuil de décision optimal via PR-curve
 - [x] Intégrer la focal loss et optimiser l’overfitting
-- [] Mettre en place une validation croisée stratifiée (k-fold)
-- [] Expérimenter le Dropout spatial (RandomErasing) pour réduire le sur-apprentissage
-- [] Automatiser la recherche du seuil optimal via PR-curve dans '05_finetune_resnet18.ipynb'
+- [ ] Mettre en place une validation croisée stratifiée (k-fold)
+- [ ] Expérimenter le Dropout spatial (RandomErasing) pour réduire le sur-apprentissage
+- [ ] Automatiser la recherche du seuil optimal via PR-curve dans '05_finetune_resnet18.ipynb'
 
 ---
 

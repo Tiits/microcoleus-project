@@ -21,9 +21,9 @@ Projet de bachelor: identification de la cyanobactérie Microcoleus anatoxicus p
 - `src/`: scripts et modules Python (prétraitement, chargement, entraînement, etc.)
 - `src/io/`: utilitaires d’entrée/sortie, notamment `lif_extractor.py`
 - `outputs/checkpoints/` : modèles sauvegardés par run (non versionnés)
-- `outputs/configs/` : copies des fichiers de configuration utilisés pour chaque expérience
-- `outputs/figures/` : graphiques, courbes et visualisations
-- `outputs/logs/` : journaux d’entraînement, rapports et métriques
+- `outputs/configs/` : copies des fichiers de configuration utilisés pour chaque expérience (non versionnées)
+- `outputs/figures/` : graphiques, courbes et visualisations (non versionnées)
+- `outputs/logs/` : journaux d’entraînement, rapports et métriques (non versionnées)
 
 ---
 
@@ -111,14 +111,14 @@ Pour créer les fichiers `splits/train.txt`, `splits/val.txt` et `splits/test.tx
 
 ### 7. Exploration des données
 
-Ouvrir le notebook :
+Ouvrir et exécuter le notebook :
   ```
   notebooks/01_data_exploration.ipynb
   ```
 
 ### 8. Entraînement
 
-Lancer un notebook :
+Ouvrir et exécuter un des notebook :
   ```
   notebooks/02_train_baseline.ipynb
   notebooks/03_transfer_learning_efficientnetb0.ipynb
@@ -142,7 +142,7 @@ En cas de modifications de la config :
 2. Générer les splits pour train/val/test (`src/split_data.py`)
 3. Prétraiter (`src/preprocessing.py`)
 4. Explorer (`notebooks/01_data_exploration.ipynb`)
-5. Entraîner et évaluer (`notebooks/02_train_baseline.ipynb`, autres notebooks)
+5. Entraîner et évaluer (`notebooks/05_finetune_resnet18.ipynb`, autres notebooks)
 6. Examiner les artefacts générés dans `outputs/`
 7. Documenter l’avancement et les problèmes rencontrés dans `LOGBOOK.md`
 
