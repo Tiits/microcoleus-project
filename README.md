@@ -1,9 +1,9 @@
 # Microcoleus Project
 
-[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/) 
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![TensorFlow 2.x+](https://img.shields.io/badge/TensorFlow-2.19+-orange?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/) 
+[![PyTorch 2.x+](https://img.shields.io/badge/PyTorch-2.7+-red?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![Jupyter Notebook](https://img.shields.io/badge/Jupyter-Notebook-orange?logo=jupyter&logoColor=white)](https://jupyter.org/install) 
-[![TensorFlow 2.x+](https://img.shields.io/badge/TensorFlow-2.x+-orange?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/) 
-[![PyTorch 2.x+](https://img.shields.io/badge/PyTorch-2.x+-red?logo=pytorch&logoColor=white)](https://pytorch.org/)
 
 Projet de bachelor: identification de la cyanobactérie Microcoleus anatoxicus par deep learning.
 
@@ -57,6 +57,12 @@ python src/io/lif_extractor.py \
     --output data/extracted/
 ```
 
+Ou en utilisant Fiji :
+```bash
+...
+```
+
+
 ### 1. Valider les changements et la configuration
 
 Pour s'assurer que la version actuelle est committée :
@@ -107,11 +113,14 @@ Ouvrir le notebook :
   notebooks/01_data_exploration.ipynb
   ```
 
-### 8. Entraînement baseline
+### 8. Entraînement
 
-Lancer le notebook :
+Lancer un notebook :
   ```
   notebooks/02_train_baseline.ipynb
+  notebooks/03_transfer_learning_efficientnetb0.ipynb
+  notebooks/04_finetune_resnet50.ipynb
+  notebooks/05_finetune_resnet18.ipynb
   ```
 
 ### 9. Pour chaque nouvel essai
