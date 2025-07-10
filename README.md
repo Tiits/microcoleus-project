@@ -50,17 +50,20 @@ Projet de bachelor: identification de la cyanobactérie Microcoleus anatoxicus p
 
 ### 0. Extraction depuis `.lif`
 
-Pour extraire automatiquement les fichiers TIFF depuis un container Leica `.lif` :
+Pour extraire automatiquement les fichiers TIFF depuis un container Leica `.lif` (sans RGB Hyperstack) :
 ```bash
 python src/io/lif_extractor.py \
     --input path/to/file.lif \
     --output data/extracted/
 ```
 
-Ou en utilisant Fiji :
-```bash
-...
-```
+Ou en utilisant Fiji (avec RGB Hyperstack) :
+
+1. Télécharger ou copier fiji_extract_lif.py.
+2. Placer le fichier dans le dossier Fiji.app/scripts/ (Linux/macOS) ou Fiji.app\\scripts\\ (Windows).
+   * Vous pouvez aussi simplement l’ouvrir dans l’éditeur de scripts (File ▸ New ▸ Script...) puis l’enregistrer.
+3. Ouvrir Fiji.
+4. Menu Plugins ▸ Scripts ▸ fiji_extract_lif.py (ou ouvrir le fichier dans l’éditeur puis cliquer sur Run ▶).
 
 
 ### 1. Valider les changements et la configuration
