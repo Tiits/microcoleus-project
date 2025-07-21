@@ -141,3 +141,7 @@ tqdm~=4.67.1
 ij~=0.0.6
 pandas~=2.2.3
 torchvision~=0.22.1
+streamlit~=1.46.1
+torch~=2.7.1
+seaborn~=0.13.2
+torchsummary~=1.5.1
