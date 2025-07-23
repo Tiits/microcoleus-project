@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--raw_dir', type=str, default='../data/processed/Switzerland', help='Répertoire des images prétraitées')
+    parser.add_argument('--raw_dir', type=str, default='../data/raw/Switzerland', help='Répertoire des images prétraitées')
     parser.add_argument('--split_dir', type=str, default='../splits/Switzerland/finetune_resnet50', help='Répertoire de sortie pour les splits')
     parser.add_argument('--train_size', type=float, default=0.7, help='Proportion du train set')
     parser.add_argument('--val_size', type=float, default=0.15, help='Proportion du validation set')
