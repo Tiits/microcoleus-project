@@ -6,6 +6,7 @@ from pathlib import Path
 from PIL import Image
 from torchvision import transforms, models
 import torch.nn as nn
+from app.crossval_model import CrossValClassifier
 
 # Import des poids pré-entrainés pour chaque archi
 from torchvision.models import ResNet18_Weights, ResNet50_Weights
@@ -49,7 +50,18 @@ class Classifier:
         # --- Chargement du checkpoint ---
         ckpt = torch.load(model_path, map_location=self.device)
         state = ckpt.get("model_state_dict", ckpt)
-        self.model.load_state_dict(state)
+
+        new_state = {}
+        for k, v in state.items():
+            if k == "fc.weight":
+                new_state["fc.1.weight"] = v
+            elif k == "fc.bias":
+                new_state["fc.1.bias"] = v
+            else:
+                new_state[k] = v
+
+        self.model.load_state_dict(new_state, strict=False)
+
         self.model.to(self.device)
         self.model.eval()
 
@@ -70,6 +82,21 @@ class Classifier:
             pred_idx = int(probs.argmax())
             return pred_idx, [float(p) for p in probs]
 
+
+class CVWrapper:
+    """Usable dans app.py pour choisir fold ou ensemble"""
+
+    def __init__(self, config_path, checkpoint_dir, n_folds=2, device="cpu"):
+        self.cv = CrossValClassifier(config_path, checkpoint_dir, n_folds, device)
+        self.classes = self.cv.classes
+
+    def predict(self, img, mode="ensemble", fold=None):
+        if mode == "ensemble":
+            return self.cv.predict_ensemble(img)
+        elif mode == "fold" and fold is not None:
+            return self.cv.predict_fold(img, fold)
+        else:
+            raise ValueError("Choose mode 'ensemble' or 'fold' with fold index")
 
 # Exemple de test rapide
 if __name__ == "__main__":

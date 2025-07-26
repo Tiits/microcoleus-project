@@ -4,7 +4,7 @@ import glob
 import os
 from PIL import Image
 import pandas as pd
-from app.model import Classifier
+from app.model import Classifier, CVWrapper
 
 # Configuration de la page Streamlit
 st.set_page_config(
@@ -20,27 +20,47 @@ config_dir = "configs"
 model_paths = glob.glob(os.path.join(checkpoint_dir, "*.pth"))
 model_names = [os.path.splitext(os.path.basename(p))[0] for p in model_paths]
 
-# Sélecteur de checkpoint
-selected_model = st.sidebar.selectbox(
-    "Choisir le modèle à utiliser",
-    model_names,
-    help="Sélectionnez le checkpoint (.pth)"
-)
+# Option Cross-validation
+use_cv = st.sidebar.checkbox("Utiliser le ResNet18 CV", value=False)
 
-@st.cache_resource
-def load_model(model_name: str) -> Classifier:
-    """
-    Charge un Classifier en fonction du nom du modèle sélectionné.
-    Extrait l'architecture (resnet18 ou resnet50) pour déterminer
-    le fichier de config approprié.
-    """
-    model_path = os.path.join(checkpoint_dir, f"{model_name}.pth")
-    arch = model_name.split("_")[0]  # ex. "resnet18" ou "resnet50"
-    config_path = os.path.join(config_dir, f"config_finetune_{arch}.yaml")
-    return Classifier(config_path=config_path, model_path=model_path, device="cpu")
+if use_cv:
+    # On propose le dossier contenant les ckpts fold1_model.pth...
+    checkpoint_dir = st.sidebar.selectbox("Dossier CV", ["models/cv_resnet18"])
+    n_folds = 2
+    mode = st.sidebar.radio("Mode inférence CV", ["ensemble", "fold"], index=0)
+    fold = None
+    if mode == "fold":
+        fold = st.sidebar.selectbox("Fold à utiliser", list(range(1, n_folds + 1)))
+    # Charger le wrapper CV
+    model = CVWrapper(
+        config_path=os.path.join(config_dir, "config_finetune_resnet18.yaml"),
+        checkpoint_dir=checkpoint_dir,
+        n_folds=n_folds,
+        device="cpu"
+    )
+else:
 
-# Chargement du modèle
-model = load_model(selected_model)
+    # Sélecteur de checkpoint
+    selected_model = st.sidebar.selectbox(
+        "Choisir le modèle à utiliser",
+        model_names,
+        help="Sélectionnez le checkpoint (.pth)"
+    )
+
+    @st.cache_resource
+    def load_model(model_name: str) -> Classifier:
+        """
+        Charge un Classifier en fonction du nom du modèle sélectionné.
+        Extrait l'architecture (resnet18 ou resnet50) pour déterminer
+        le fichier de config approprié.
+        """
+        model_path = os.path.join(checkpoint_dir, f"{model_name}.pth")
+        arch = model_name.split("_")[0]  # ex. "resnet18" ou "resnet50"
+        config_path = os.path.join(config_dir, f"config_finetune_{arch}.yaml")
+        return Classifier(config_path=config_path, model_path=model_path, device="cpu")
+    # Chargement du modèle
+    model = load_model(selected_model)
+
 
 st.title("🦠 Microcoleus anatoxicus Toxicity Classifier")
 
@@ -56,7 +76,14 @@ with tab_single:
     if file:
         img = Image.open(file).convert("RGB")
         with st.spinner("Inférence en cours…"):
-            scores = model.predict(img, return_dict=True)
+            if use_cv:
+                if mode == "ensemble":
+                    scores = model.predict(img, mode="ensemble")
+                else:
+                    scores = model.predict(img, mode="fold", fold=fold)
+            else:
+                scores = model.predict(img, return_dict=True)
+
 
         st.subheader("Résultats")
         for lbl, prob in sorted(scores.items(), key=lambda x: x[1], reverse=True):
@@ -86,7 +113,10 @@ with tab_batch:
         rows = []
         for f in files:
             img = Image.open(f).convert("RGB")
-            scores = model.predict(img, return_dict=True)
+            if use_cv:
+                scores = model.predict(img, mode=mode, fold=fold)
+            else:
+                scores = model.predict(img, return_dict=True)
             # crée une ligne avec le nom de fichier + toutes les classes
             row = {"Fichier": f.name}
             row.update(scores)
@@ -104,7 +134,11 @@ with tab_batch:
         st.write(f"Probabilité moyenne **toxique** : {mean_tox:.1%} ± {ci:.1%}")
         st.progress(mean_tox)
 
-        verdict = "Toxique" if mean_tox >= 0.5 else "Non toxique"
+        if use_cv:
+            vote_global = int(mean_tox >= 0.49)
+            verdict = "Toxique" if vote_global else "Non toxique"
+        else:
+            verdict = "Toxique" if mean_tox >= 0.49 else "Non toxique"
         st.markdown(f"Verdict : **{verdict}**")
 
         # affichage du tableau détaillé
