@@ -20,10 +20,14 @@ data/unextracted/*
 
 # Splits
 splits/*
+splits/Switzerland/*
+splits/Switzerland/finetune_resnet50/*
 !splits/**/.gitkeep
+!splits/Switzerland/**/.gitkeep
 
 # Outputs Configs
 outputs/configs/*
+outputs/configs/all/*
 !outputs/configs/**/.gitkeep
 
 # Checkpoints
