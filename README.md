@@ -5,149 +5,221 @@
 [![PyTorch 2.x+](https://img.shields.io/badge/PyTorch-2.7+-red?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![Jupyter Notebook](https://img.shields.io/badge/Jupyter-Notebook-orange?logo=jupyter&logoColor=white)](https://jupyter.org/install) 
 
-Projet de bachelor: identification de la cyanobactérie Microcoleus anatoxicus par deep learning.
+A deep learning approach for identifying the cyanobacterium _Microcoleus anatoxicus_.
 
----
+## 📋 Table of Contents
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Workflow](#workflow)
+- [Streamlit Web Application](#streamlit-web-application)
+- [Known Limitations](#known-limitations)
+- [Data Privacy](#data-privacy)
 
-## Structure du projet
+## Overview
 
-- `configs/` : fichiers de configuration YAML pour chaque expérience
-- `splits/` : définitions des découpages train/val/test (fixés pour la reproductibilité)
-- `data/raw/` : images brutes, telles que reçues (non versionnées)
-- `data/processed/` : images prétraitées prêtes pour l’entraînement (non versionnées)
-- `data/extracted/` : images TIFF extraites depuis `.lif` (non versionnées)
-- `data/unextracted/` : fichiers `.lif` originaux (non versionnés)
-- `notebooks/` : notebooks Jupyter pour l’exploration et le prototypage
-- `src/`: scripts et modules Python (prétraitement, chargement, entraînement, etc.)
-- `src/io/`: utilitaires d’entrée/sortie, notamment `lif_extractor.py`
-- `outputs/checkpoints/` : modèles sauvegardés par run (non versionnés)
-- `outputs/configs/` : copies des fichiers de configuration utilisés pour chaque expérience (non versionnées)
-- `outputs/figures/` : graphiques, courbes et visualisations (non versionnées)
-- `outputs/logs/` : journaux d’entraînement, rapports et métriques (non versionnées)
+This bachelor project aims to implement deep learning techniques to identify _Microcoleus anatoxicus_, a cyanobacterium species. The project uses computer vision and machine learning to assist in the automated identification process, making it easier for researchers to analyze samples.
 
----
+### Key Features
+- Automated extraction of TIFF images from Leica `.lif` files
+- Image preprocessing pipeline optimized for microscopy data
+- Multiple deep learning models for comparison (ResNet18, ResNet50, EfficientNetB0)
+- Comprehensive data splitting and validation procedures
+- Detailed experiment tracking and reproducibility measures
 
-## Installation
+## Project Structure
 
-1. Cloner le dépôt et se placer à la racine :
-   ```bash
-   git clone https://github.com/Tiits/microcoleus-project.git
-   cd microcoleus-project
-   ```
-2. Créer un environnement virtuel et l’activer :
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-3. Installer les dépendances :
-   ```bash
-   pip install -r requirements.txt
-   ```
-
----
-
-## Utilisation des scripts pour expérimentation
-
-### 0. Extraction depuis `.lif`
-
-Pour extraire automatiquement les fichiers TIFF depuis un container Leica `.lif` (sans RGB Hyperstack) :
-```bash
-python src/io/lif_extractor.py \
-    --input path/to/file.lif \
-    --output data/extracted/
+```
+microcoleus-project/
+├── configs/           # YAML configuration files for experiments
+├── data/
+│   ├── raw/          # Original images (not versioned)
+│   ├── processed/    # Preprocessed training data (not versioned)
+│   ├── extracted/    # Extracted TIFF files (not versioned)
+│   └── unextracted/  # Original .lif files (not versioned)
+├── notebooks/        # Jupyter notebooks for analysis
+├── src/             # Python source code
+│   └── io/          # Input/output utilities
+├── outputs/         # Experiment outputs (not versioned)
+└── splits/          # Train/validation/test splits
 ```
 
-Ou en utilisant Fiji (avec RGB Hyperstack) :
+## Getting Started
 
-1. Télécharger ou copier fiji_extract_lif.py.
-2. Placer le fichier dans le dossier Fiji.app/scripts/ (Linux/macOS) ou Fiji.app\\scripts\\ (Windows).
-   * Vous pouvez aussi simplement l’ouvrir dans l’éditeur de scripts (File ▸ New ▸ Script...) puis l’enregistrer.
-3. Ouvrir Fiji.
-4. Menu Plugins ▸ Scripts ▸ fiji_extract_lif.py (ou ouvrir le fichier dans l’éditeur puis cliquer sur Run ▶).
+### Prerequisites
+- Python 3.12 or higher
+- Fiji/ImageJ (for RGB Hyperstack extraction)
+- Git
+- Virtual environment manager
 
+### Quick Start
+1. Clone the repository:
+```bash
+git clone https://github.com/Tiits/microcoleus-project.git
+cd microcoleus-project
+```
 
-### 1. Valider les changements et la configuration
+2. Create and activate virtual environment:
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-Pour s'assurer que la version actuelle est committée :
-   ```bash
-  git status
-  git add .
-  git commit -m "chore: prepare for experiment – update config/model code"
-  ```
-
-### 2. Choisir un identifiant d’expérience
-Récupérer le dernier run_id depuis un notebook:
-  ```bash
-  run_id = "yyyy-mm-dd_hash-git"
-  ```
-
-### 3. Taguer cette version
-Pour créer un tag Git qui référence précisément ce commit et cette expérience :
-  ```bash
-  git tag -a exp/baseline/${run_id} -m "exp/baseline ${run_id}"
-  git push origin main --tags
-  ```
-
-### 4. Listing et vérification
-
-Pour lister les images disponibles et vérifier leur intégrité (si nécessaire) :
-  ```bash
-  python src/dataset.py
-  ```
-
-### 5. Prétraitement des images
-
-Pour prétraiter toutes les images de `data/raw/all` vers `data/processed/all` (si nécessaire) :
-  ```bash
-  python src/preprocessing.py
-  ```
-
-### 6. Génération des splits
-
-Pour créer les fichiers `splits/train.txt`, `splits/val.txt` et `splits/test.txt` (si nécessaire) :
-  ```bash
-  python src/split_data.py
-  ```
-
-### 7. Exploration des données
-
-Ouvrir et exécuter le notebook :
-  ```
-  notebooks/01_data_exploration.ipynb
-  ```
-
-### 8. Entraînement
-
-Ouvrir et exécuter un des notebook :
-  ```
-  notebooks/02_train_baseline.ipynb
-  notebooks/03_transfer_learning_efficientnetb0.ipynb
-  notebooks/04_finetune_resnet50.ipynb
-  notebooks/05_finetune_resnet18.ipynb
-  ```
-
-### 9. Pour chaque nouvel essai
-En cas de modifications de la config :
-  ```bash
-  git add configs/my_experiment.yaml
-  git commit -m "feat: add ${model name} config (${config_name}.yaml)"
-  ```
-
----
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
 ## Workflow
 
-0. Extraire les TIFF depuis les `.lif` si besoin (src/io/lif_extractor.py)
-1. Placer les données brutes dans `data/raw/{pays}` ou `data/raw/all`
-2. Générer les splits pour train/val/test (`src/split_data.py`)
-3. Prétraiter (`src/preprocessing.py`)
-4. Explorer (`notebooks/01_data_exploration.ipynb`)
-5. Entraîner et évaluer (`notebooks/05_finetune_resnet18.ipynb`, autres notebooks)
-6. Examiner les artefacts générés dans `outputs/`
-7. Documenter l’avancement et les problèmes rencontrés dans `LOGBOOK.md`
+### 1. Data Preparation
+1. **Image Extraction**
+   - For standard images:
+     ```bash
+     python src/io/lif_extractor.py --input your_file.lif --output data/extracted/
+     ```
+   - For RGB Hyperstack: Use Fiji with the provided script (see detailed instructions below)
+
+2. **Data Organization**
+   - Place extracted images in `data/raw/[country]` or `data/raw/all`
+   - Ensure consistent naming conventions
+
+### 2. Analysis Pipeline
+
+`Data Splits` and `Preprocess Images` are only needed for notebooks `02` and `03`.
+
+1. **Generate Data Splits**
+   ```bash
+   python src/split_data.py
+   ```
+
+2. **Preprocess Images**
+   ```bash
+   python src/preprocessing.py
+   ```
+
+3. **Explore Your Data**
+   - Open `notebooks/01_data_exploration.ipynb`
+   - Make sure to use the correct data path
+   - Review data distribution and quality
+
+4. **Train Models**
+   - Start with `notebooks/02_train_baseline.ipynb`
+   - For better performance: `notebooks/05_finetune_resnet18.ipynb`
+   - Always make sure to use the correct data path in the `config` file
+
+5. **Evaluate Results**
+   - Check `outputs/figures/` for visualizations
+   - Review metrics in `outputs/logs/`
+
+### RGB Hyperstack Extraction with Fiji
+1. Download Fiji from [https://fiji.sc](https://fiji.sc)
+2. Install the provided script:
+   - Copy `fiji_extract_lif.py` to Fiji.app/scripts/
+   - Or open via File ▸ New ▸ Script...
+3. Run: Plugins ▸ Scripts ▸ fiji_extract_lif.py
+
+## Streamlit Web Application
+
+### Online Access
+The application is available online at: `[URL]`
+
+### Local Installation and Usage
+
+1. **Install Streamlit**
+```bash
+pip install streamlit
+```
+
+2. **Run the App Locally**
+```bash
+cd microcoleus-project
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+streamlit run app.py
+```
+The app will be available at `http://localhost:8501`
+
+### Features
+- Upload and analyze microscopy images
+- Real-time predictions using pre-trained models
+- Visualization of model confidence scores
+- Batch processing capabilities
+- Export results
+
+### Adding Your Own Models
+
+1. **Prepare Your Model**
+- Export your trained model in one of the supported formats:
+  ```python
+  # For TensorFlow models
+  model.save('path/to/your/model')
+  
+  # For PyTorch models
+  torch.save(model.state_dict(), 'path/to/your/model.pth')
+  ```
+
+2. **Add Model to the App**
+- Place your model in the `models/` directory
+- Update the model configuration in `configs/`:
+
+3. **Custom Preprocessing (Optional)**
+If your model requires custom preprocessing:
+```python
+# In app/model.py
+def your_custom_preprocessing(image):
+    # Your preprocessing steps
+    return processed_image
+# Add the function in the Classifier class
+```
+
+### Troubleshooting
+Common issues and solutions:
+1. **Memory Issues**
+   ```bash
+   streamlit run app.py --server.maxUploadSize=1024
+   ```
+
+2. **GPU Support**
+   - Ensure CUDA is properly installed
+   - Set `use_gpu: true` in config.yaml
+
+3. **Model Loading Errors**
+   - Check model format compatibility
+   - Verify dependencies versions
+
+## Known Limitations
+
+⚠️ **Important Notes for Users**
+
+1. **Overfitting Concerns**
+   - Current models show signs of overfitting
+   - Recommended mitigations:
+     - Use strong regularization
+     - Implement early stopping
+     - Reduce model complexity
+     - Increase data augmentation
+
+2. **Best Practices**
+   - Always validate results manually
+   - Use cross-validation
+   - Monitor training curves carefully
+   - Document any anomalies
+
+## Data Privacy
+
+⚠️ **Important:**
+- Raw data files should never be committed to GitHub
+- Trained models should be stored locally only
+- Use `.gitignore` to prevent accidental uploads
+
+## Support
+
+For technical issues:
+1. Check existing documentation in `notebooks/`
+2. Review `LOGBOOK.md` for known issues
+3. Open an issue on GitHub
 
 ---
 
-## Confidentialité
-
-⚠️ Les données brutes et les modèles entraînés **ne doivent pas** être versionnées sur GitHub.
+*This project is part of a bachelor thesis in data science and machine learning.*
