@@ -1,15 +1,16 @@
 """
-src/data_loader.py
+Data Loader Module
 
-Module de gestion des jeux de données à partir de fichiers de splits et configuration YAML.
+This module provides functions to load and preprocess image data for training and evaluation using TensorFlow.
 """
 import random
-from src.config_utils import load_config
+
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 
-# Charger la configuration et fixer les seeds
+from src.config_utils import load_config
+
 cfg = load_config()
 random.seed(cfg['seed'])
 np.random.seed(cfg['seed'])
@@ -18,24 +19,37 @@ tf.random.set_seed(cfg['seed'])
 
 def preprocess_and_load(path, label, img_size):
     """
-    Charge, redimensionne et normalise une image à partir de son chemin.
-    Args:
-        path (str): Chemin vers l'image.
-        label (int): Indice de la classe.
-        img_size (tuple): Taille cible (H, W).
+    Preprocess an image and return the image array and label.
+
+    Parameters:
+        path (str): Filesystem path to the image.
+        label (int): Numeric label associated with the image.
+        img_size (tuple of int): Target image size as (width, height).
+
     Returns:
-        tuple: (image_array, label)
+        np.ndarray: Normalized image array of shape (height, width, 3).
+        np.int32: Label as a 32-bit integer.
     """
     img = Image.open(path).convert('RGB').resize(img_size)
+    # Convert image to a normalized float32 numpy array with values in [0, 1].
     x = np.array(img, dtype=np.float32) / 255.0
+    # Cast the label to a 32-bit integer.
     return x, np.int32(label)
 
 
 def _load_py(path, label, img_size):
     """
-    Fonction interne pour tf.py_function : convertit path et label en numpy, appelle preprocess_and_load.
+    Wrapper for tf.py_function to load and preprocess image data.
+
+    Parameters:
+        path (tf.Tensor): Byte string tensor of the image file path.
+        label (tf.Tensor): Numeric tensor label.
+        img_size (tuple of int): Target image dimensions.
+
+    Returns:
+        np.ndarray: Processed image array.
+        np.int32: Processed label tensor.
     """
-    # Convertir en Python types
     path_str = path.numpy().decode('utf-8')
     label_int = int(label.numpy())
     x, lab = preprocess_and_load(path_str, label_int, img_size)
@@ -44,28 +58,31 @@ def _load_py(path, label, img_size):
 
 def load_from_splits(split_file, batch_size, img_size):
     """
-    Charge un tf.data.Dataset à partir d'un fichier de splits avec shapes explicites.
-    Args:
-        split_file (str): Chemin vers le fichier split (.txt).
-        batch_size (int): Taille du batch.
-        img_size (tuple): Taille des images (H, W).
+    Load image paths and labels from a split file and prepare a tf.data.Dataset.
+
+    Parameters:
+        split_file (str): Path to tab-separated file with image paths and labels.
+        batch_size (int): Number of samples per batch.
+        img_size (tuple of int): Target image dimensions as (width, height).
+
     Returns:
-        tf.data.Dataset, dict: Dataset et mapping classe -> indice.
+        tf.data.Dataset: Dataset yielding batches of (image, label).
+        dict: Mapping of class names to numeric indices.
     """
-    # Lecture des chemins et labels
+    # Read file paths and labels from the split file.
     paths, labels = [], []
     with open(split_file, 'r') as f:
         for line in f:
             p, lbl = line.strip().split('\t')
             paths.append(p)
             labels.append(lbl)
-    # Mapping classe->indice
     classes = sorted(set(labels))
     class_indices = {cls: i for i, cls in enumerate(classes)}
     y = [class_indices[l] for l in labels]
 
-    # Construction du tf.data pipeline
+    # Create a TensorFlow dataset from the file paths and labels.
     ds = tf.data.Dataset.from_tensor_slices((paths, y))
+    # Use tf.py_function to apply Python-based loading and preprocessing.
     ds = ds.map(
         lambda p, y: tf.py_function(
             func=lambda p, y: _load_py(p, y, img_size),
@@ -74,7 +91,6 @@ def load_from_splits(split_file, batch_size, img_size):
         ),
         num_parallel_calls=tf.data.AUTOTUNE
     )
-    # Fixer les shapes pour l'inférence du modèle
     ds = ds.map(
         lambda x, y: (
             tf.ensure_shape(x, (*img_size, 3)),
@@ -82,7 +98,10 @@ def load_from_splits(split_file, batch_size, img_size):
         ),
         num_parallel_calls=tf.data.AUTOTUNE
     )
+    # Shuffle the dataset with a fixed seed for reproducibility.
     ds = ds.shuffle(len(paths), seed=cfg['seed'])
+    # Batch the dataset.
     ds = ds.batch(batch_size)
+    # Prefetch batches for performance optimization.
     ds = ds.prefetch(tf.data.AUTOTUNE)
     return ds, class_indices
