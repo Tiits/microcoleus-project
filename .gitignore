@@ -27,7 +27,8 @@ splits/Switzerland/finetune_resnet50/*
 
 # Outputs Configs
 outputs/configs/*
-outputs/configs/all/*
+/outputs/configs/all/*
+outputs/configs/Switzerland/*
 !outputs/configs/**/.gitkeep
 
 # Checkpoints
@@ -41,15 +42,6 @@ outputs/figures/*
 # Logs
 outputs/logs/*
 !outputs/logs/**/.gitkeep
-
-# Sortie de données et modèles
-outputs/*
-!outputs/configs/
-!outputs/configs/**
-
-# Dossier de configurations
-!configs/
-!configs/**
 
 # Conserver les .gitkeep
 !**/.gitkeep

@@ -1,0 +1,47 @@
+# Transfer Learning Configuration
+seed: 42
+
+data:
+  raw_dir: data/raw/all
+  processed_dir: data/processed/all
+  splits:
+    train: splits/all/finetune_efficientnetb0/train.txt
+    val: splits/all/finetune_efficientnetb0/val.txt
+
+preprocessing:
+  target_size: [128, 128]
+  normalize: true
+  augmentation:
+    rotation_range: 30
+    width_shift_range: 0.2
+    height_shift_range: 0.2
+    shear_range: 0.2
+    zoom_range: 0.2
+    horizontal_flip: true
+    vertical_flip: false
+    brightness_range: [0.8, 1.2]
+    fill_mode: nearest
+
+training:
+  model_type: efficientnetb0
+  batch_size: 32
+  epochs: 20
+  learning_rate: 0.0001
+  dropout_rate: 0.5
+  early_stopping:
+    monitor: val_accuracy
+    patience: 5
+    mode: max
+    restore_best_weights: true
+
+model:
+  backbone: efficientnetb0
+  pretrained: true
+  pooling: global_average
+  activation: softmax
+
+paths:
+  checkpoints: outputs/checkpoints/all/finetune_efficientnetb0
+  configs: outputs/configs/all
+  figures: outputs/figures/all/finetune_efficientnetb0
+  logs: outputs/logs/all/finetune_efficientnetb0

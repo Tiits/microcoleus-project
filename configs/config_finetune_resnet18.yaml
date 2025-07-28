@@ -33,13 +33,13 @@ data:
   path: data/raw/Switzerland
   train_split: 0.8
 inference:
-  temperature: 1.1955986022949219
+  temperature: 1.1917283535003662
   threshold: 0.401
-  threshold_global: 0.3914346992969513
+  threshold_global: 0.3351149559020996
   thresholds_per_fold:
-    fold_0: 0.0001419039472239092
-    fold_1: 0.4927164614200592
-    fold_2: 0.6814457774162292
+    fold_0: 0.006015102379024029
+    fold_1: 0.6420585513114929
+    fold_2: 0.3572711646556854
 model:
   name: resnet18
   num_classes: 2
