@@ -192,19 +192,29 @@ Common issues and solutions:
 
 ⚠️ **Important Notes for Users**
 
-1. **Overfitting Concerns**
-   - Current models show signs of overfitting
-   - Recommended mitigations:
-     - Use strong regularization
-     - Implement early stopping
-     - Reduce model complexity
-     - Increase data augmentation
+- **Overfitting**
+  - Models display overfitting. Mitigation strategies:
+    - Strong regularization
+    - Early stopping
+    - Reduced model complexity
+    - Enhanced data augmentation
 
-2. **Best Practices**
-   - Always validate results manually
-   - Use cross-validation
-   - Monitor training curves carefully
-   - Document any anomalies
+- **Best Practices**
+  - Manual result validation
+  - Cross-validation
+  - Training curve monitoring
+  - Anomaly documentation
+
+- **ViT-B_16 caveat**
+  - **Context:** `07_architectures_comparison` notebook
+  - **Note:** Vision Transformers (e.g., ViT-B_16) often require:
+    - Longer training schedules
+    - Specialized data augmentations
+    - Larger batch sizes  
+  Uniform CNN-based pipelines may understate their performance.
+
+- **Data volume**
+  - Even models that avoid overfitting show low accuracy due to limited training data. Retraining on a larger dataset is recommended.
 
 ## Data Privacy
 
@@ -217,8 +227,7 @@ Common issues and solutions:
 
 For technical issues:
 1. Check existing documentation in `notebooks/`
-2. Review `LOGBOOK.md` for known issues
-3. Open an issue on GitHub
+2. Open an issue on GitHub
 
 ---
 
