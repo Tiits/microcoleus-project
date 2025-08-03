@@ -104,8 +104,8 @@ pip install -r requirements.txt
    - Review data distribution and quality
 
 4. **Train Models**
-   - Start with `notebooks/02_train_baseline.ipynb`
-   - For better performance: `notebooks/05_finetune_resnet18.ipynb`
+   - Start with `notebooks/07_architectures_comparison.ipynb`
+   - For better performance: `notebooks/08_best_model.ipynb`
    - Always make sure to use the correct data path in the `config` file
 
 5. **Evaluate Results**
