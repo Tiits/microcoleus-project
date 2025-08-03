@@ -23,7 +23,7 @@ augmentation:
 
 data:
   path: data/raw/Switzerland
-  batch_size: 16
+  batch_size: 32
   num_workers: 2
 
 model:
@@ -56,3 +56,5 @@ inference:
     end: 0.9
     num: 17
   default_threshold: 0.5
+
+threshold: 0.5
