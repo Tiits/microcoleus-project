@@ -231,4 +231,4 @@ For technical issues:
 
 ---
 
-*This project is part of a bachelor thesis in data science and machine learning.*
+*This project was carried out as part of a bachelor thesis in data science and machine learning, at the University of Neuchâtel, in collaboration with the Microbiology Laboratory.*
