@@ -204,7 +204,7 @@ st.markdown(
         background-color: #ecf0f6;
         border: 1px solid #adb0be;
     ">
-      <a href="https://github.com/yourusername/microcoleus-project" target="_blank" style="color: #000000; text-decoration: none;">
+      <a href="https://github.com/Tiits/microcoleus-project.git" target="_blank" style="color: #000000; text-decoration: none;">
         🔗 GitHub Repository
       </a>
     </div>
